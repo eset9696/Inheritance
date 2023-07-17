@@ -297,6 +297,15 @@ public:
 	{
 		setDiploma(diploma);
 		setSupervisor(teacher);
+		cout << "G Constructor:\t\t" << endl;
+	}
+	~Graduate()
+	{
+		cout << "G Destructor:\t\t" << endl;
+	}
+	void print() const
+	{
+		cout << diploma << " " << supervisor << endl;
 	}
 };
 
@@ -314,5 +323,6 @@ void main()
 	Teacher teacher("Walter", "White", 45, "Chemistry", 25, 1000);
 	teacher.print();
 
+	Graduate
 
 }
