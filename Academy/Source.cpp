@@ -1,6 +1,8 @@
 //inheritance
 #include <iostream>
 
+#define delimeter "\n------------------------\n"
+
 using namespace std;
 
 class Date
@@ -44,18 +46,41 @@ public:
 		setDay(day);
 		setMonth(month);
 		setYear(year);
-		cout << "Date constructor: \t\t" << endl;
+
+		cout << "Date constructor: \t" << this << endl;
 	}
+
+	Date(const Date& other)
+	{
+		setDay(other.day);
+		setMonth(other.month);
+		setYear(other.year);
+
+		cout << "Date constructor: \t" << this << endl;
+	}
+
 	~Date()
 	{
-		cout << "Date Destructor: \t\t" << endl;
+		cout << "Date Destructor: \t" << this << endl;
 	}
 	
+	Date& operator=(const Date& other)
+	{
+		setDay(other.day);
+		setMonth(other.month);
+		setYear(other.year);
+
+		cout << "Copy assignment: \t" << this << endl;
+		return *this;
+	}
+
 	void print()
 	{
+		cout << delimeter << endl;
 		cout << day << "-" << month << "-" << year << endl;
 	}
 };
+
 std::ostream& operator<<(std::ostream& os, const Date& date)
 {
 	cout << date.getDay() << "-" << date.getMonth() << "-" << date.getYear();
@@ -107,24 +132,32 @@ public:
 		setLastName(lastName);
 		setFirstName(firstName);
 		setAge(age);
-		cout << "HConstructor:\t\t" << endl;
+		
+		cout << "HConstructor:\t\t" << this << endl;
+	}
+
+	Human(const Human& other)
+	{
+		setLastName(other.lastName);
+		setFirstName(other.firstName);
+		setAge(other.age);
+
+		cout << "H Copy constructor:\t" << this << endl;
 	}
 
 	~Human()
 	{
-		cout << "HDestructor:\t\t" << endl;
+		
+		cout << "HDestructor:\t\t" << this << endl;
 	}
 
 	void print() const 
 	{
-		cout << lastName << " " << firstName << " " << age << endl;
+		cout << delimeter << endl;
+		cout << "Name: " << lastName << " " << firstName << ". Age: " << age << endl;
 	}
 };
-std::ostream& operator<<(std::ostream& os, const Human& human)
-{
-	cout << human.getLastName() << " " << human.getFirstName() << " " << human.getAge();
-	return os;
-}
+
 class Student :public Human
 {
 	std::string speciality;
@@ -179,32 +212,41 @@ public:
 		setGroup(group);
 		setRating(rating);
 		setAttendance(attendance);
-		cout << "SConstructor:\t\t" << endl;
+
+		cout << "SConstructor:\t\t" << this << endl;
+	}
+
+	Student(const Student& other) :Human(other)
+	{
+		setSpeciality(other.speciality);
+		setGroup(other.group);
+		setRating(other.rating);
+		setAttendance(other.attendance);
+
+		cout << "S copy constructor:\t" << this << endl;
 	}
 
 	~Student()
 	{
-		cout << "SDestructor:\t\t" << endl;
+		
+		cout << "SDestructor:\t\t" << this << endl;
 	}
 	void print() const
 	{
+		cout << delimeter << endl;
 		Human::print();
-		cout << speciality << " " << group << " " << rating << " " << attendance << endl;
+		cout << "Speciality: " << speciality << ". Study group: " << group << ". Average score: " << rating <<
+			". Attendance: " << attendance << endl;
 	}
 };
-std::ostream& operator<<(std::ostream& os, const Student& student) 
-{
-	cout << student.getLastName() << " " << student.getFirstName() << " " <<
-		student.getAge() << " " << student.getSpeciality() << " " << student.getGroup() <<
-		" " << student.getRating() << " " << student.getAttendance();
-	return os;
-}
+
 class Teacher :public Human
 {
 	std::string speciality;
 	int experience;
 	double salary;
 	Date dateOfEmployment;
+
 public:
 	const std::string getSpeciality() const
 	{
@@ -258,42 +300,39 @@ public:
 		const std::string& speciality, const int experience, const double salary, const Date& date
 	) : Human(lastName, firstName, age)
 	{
-		cout << date << endl;
 		setSpeciality(speciality);
 		setExperience(experience);
 		setSalary(salary);
 		setDateOfEmployment(date);
-		cout << "TConstructor:\t\t" << endl;
+
+		
+		cout << "TConstructor:\t\t" << this << endl;
 	}
 
 	Teacher(const Teacher& other) : Human(other)
 	{
-		this->speciality = other.speciality;
-		this->experience = other.experience;
-		this->salary = other.salary;
-		this->dateOfEmployment = other.dateOfEmployment;
-		cout << "T Copy constructor:\t" << endl;
+		setSpeciality(other.speciality);
+		setExperience(other.experience);
+		setSalary(other.salary);
+		setDateOfEmployment(other.dateOfEmployment);
+		
+		cout << "T Copy constructor:\t" << this << endl;
 	}
 
 	~Teacher()
 	{
+		
 		cout << "TDestructor:\t\t" << endl;
 	}
 
 	void print() const
 	{
+		cout << delimeter << endl;
 		Human::print();
-		cout << speciality << " " << experience << " " << salary << " " << dateOfEmployment << endl;
+		cout << "Speciality: " << speciality << ". Work experience: " << experience << ". Salary: " << salary <<
+			"$. Date of employment: " << dateOfEmployment << endl;
 	}
 };
-
-std::ostream& operator<<(std::ostream& os, const Teacher& teacher)
-{
-	cout << teacher.getLastName() << " " << teacher.getFirstName() << " " <<
-		teacher.getAge() << " " << teacher.getSpeciality() << " " << teacher.getSalary() <<
-		" " << teacher.getDateOfEmployment();
-	return os;
-}
 
 class Graduate :public Student
 {
@@ -324,26 +363,22 @@ public:
 	{
 		setDiploma(diploma);
 		setSupervisor(teacher);
-		cout << "G Constructor:\t\t" << endl;
+
+		
+		cout << "G Constructor:\t\t" << this << endl;
 	}
 	~Graduate()
 	{
-		cout << "G Destructor:\t\t" << endl;
+		
+		cout << "G Destructor:\t\t" << this << endl;
 	}
 	void print() const
 	{
+		cout << delimeter << endl;
 		Student::print();
-		cout << diploma << " " << supervisor.getLastName() << " " << supervisor.getFirstName() << endl;
+		cout << "Diploma theme: " << diploma << ". Diploma supervisor: " << supervisor.getLastName() << " " << supervisor.getFirstName() << endl;
 	}
 };
-
-std::ostream& operator<<(std::ostream& os, const Graduate& graduate)
-{
-	cout << graduate.getLastName() << " " << graduate.getFirstName() << " " <<
-		graduate.getAge() << " " << graduate.getSpeciality() << " " << graduate.getGroup() << " " << 
-		graduate.getRating() << " " << graduate.getAttendance() << graduate.getDiploma() << graduate.getSupervisor();
-	return os;
-}
 
 void main()
 {
@@ -351,16 +386,14 @@ void main()
 
 	Human human("Montana", "Antonio", 30);
 	human.print();
-	cout << human << endl;
 
 
 	Student student("Pinkman", "Jessie", 20, "Chemistry", "PD-212", 4.8, 0.97);
 	student.print();
-	cout << student << endl;
 
 	Teacher teacher("Walter", "White", 45, "Chemistry", 25, 1000, Date(2, 10, 1998));
 	teacher.print();
 
-	Graduate graduate(student, "Methamfetamine production", teacher);
+	Graduate graduate(student, "\"Methamfetamine production\"", teacher);
 	graduate.print();
 }
