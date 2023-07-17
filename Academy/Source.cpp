@@ -3,59 +3,6 @@
 
 using namespace std;
 
-class Date
-{
-	int day;
-	int month;
-	int year;
-public:
-	int getDay() const
-	{
-		return day;
-	}
-
-	int getMonth() const
-	{
-		return month;
-	}
-
-	int getYear() const
-	{
-		return year;
-	}
-
-	void setDay(int day)
-	{
-		this->day = day;
-	}
-
-	void setMonth(int month)
-	{
-		this->month = month;
-	}
-
-	void setYear(int year)
-	{
-		this->year = year;
-	}
-
-	Date(const int day, const int month, const int year)
-	{
-		setDay(day);
-		setDay(month);
-		setDay(year);
-		cout << "Date constructor: \t\t" << endl;
-	}
-	~Date()
-	{
-		cout << "Date Destructor: \t\t" << endl;
-	}
-	
-	void print()
-	{
-		cout << day << "-" << month << "-" << year << endl;
-	}
-};
 class Human
 {
 protected:
@@ -188,7 +135,6 @@ class Teacher :public Human
 	std::string speciality;
 	int experience;
 	double salary;
-	//Date dateOfEnployment;
 public:
 	const std::string getSpeciality() const
 	{
@@ -205,11 +151,6 @@ public:
 		return salary;
 	}
 
-	/*Date getDateOfEnployment() const
-	{
-		return dateOfEnployment;
-	}*/
-
 	void setSpeciality(const std::string& speciality)
 	{
 		this->speciality = speciality;
@@ -224,11 +165,6 @@ public:
 	{
 		this->salary = salary;
 	}
-
-	/*void setDateOfEnployment(const Date date)
-	{
-		dateOfEnployment = date;
-	}*/
 
 	Teacher() :Human("", "", 0)
 	{
@@ -246,7 +182,6 @@ public:
 		setSpeciality(speciality);
 		setExperience(experience);
 		setSalary(salary);
-		//setDateOfEnployment(date);
 		cout << "TConstructor:\t\t" << endl;
 	}
 	Teacher(const Teacher& other) : Human(other)
@@ -254,7 +189,6 @@ public:
 		this->speciality = other.speciality;
 		this->experience = other.experience;
 		this->salary = other.salary;
-		//setDateOfEnployment(date);
 		cout << "T Copy constructor:\t" << endl;
 	}
 	~Teacher()
