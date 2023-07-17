@@ -24,26 +24,26 @@ public:
 		return year;
 	}
 
-	void setDay(int day)
+	void setDay(const int day)
 	{
 		this->day = day;
 	}
 
-	void setMonth(int month)
+	void setMonth(const int month)
 	{
 		this->month = month;
 	}
 
-	void setYear(int year)
+	void setYear(const int year)
 	{
 		this->year = year;
 	}
-
-	Date(const int day, const int month, const int year)
+	
+	Date(int day = 1, int month = 1, int year = 1)
 	{
 		setDay(day);
-		setDay(month);
-		setDay(year);
+		setMonth(month);
+		setYear(year);
 		cout << "Date constructor: \t\t" << endl;
 	}
 	~Date()
@@ -56,6 +56,12 @@ public:
 		cout << day << "-" << month << "-" << year << endl;
 	}
 };
+std::ostream& operator<<(std::ostream& os, const Date& date)
+{
+	cout << date.getDay() << "-" << date.getMonth() << "-" << date.getYear();
+	return os;
+}
+
 class Human
 {
 protected:
@@ -114,7 +120,11 @@ public:
 		cout << lastName << " " << firstName << " " << age << endl;
 	}
 };
-
+std::ostream& operator<<(std::ostream& os, const Human& human)
+{
+	cout << human.getLastName() << " " << human.getFirstName() << " " << human.getAge();
+	return os;
+}
 class Student :public Human
 {
 	std::string speciality;
@@ -182,13 +192,19 @@ public:
 		cout << speciality << " " << group << " " << rating << " " << attendance << endl;
 	}
 };
-
+std::ostream& operator<<(std::ostream& os, const Student& student) 
+{
+	cout << student.getLastName() << " " << student.getFirstName() << " " <<
+		student.getAge() << " " << student.getSpeciality() << " " << student.getGroup() <<
+		" " << student.getRating() << " " << student.getAttendance();
+	return os;
+}
 class Teacher :public Human
 {
 	std::string speciality;
 	int experience;
 	double salary;
-	//Date dateOfEnployment;
+	Date dateOfEmployment;
 public:
 	const std::string getSpeciality() const
 	{
@@ -205,10 +221,10 @@ public:
 		return salary;
 	}
 
-	/*Date getDateOfEnployment() const
+	Date getDateOfEmployment() const
 	{
-		return dateOfEnployment;
-	}*/
+		return dateOfEmployment;
+	}
 
 	void setSpeciality(const std::string& speciality)
 	{
@@ -225,10 +241,10 @@ public:
 		this->salary = salary;
 	}
 
-	/*void setDateOfEnployment(const Date date)
+	void setDateOfEmployment(const Date& date)
 	{
-		dateOfEnployment = date;
-	}*/
+		dateOfEmployment = date;
+	}
 
 	Teacher() :Human("", "", 0)
 	{
@@ -239,36 +255,47 @@ public:
 
 	Teacher(
 		const std::string& lastName, const std::string& firstName, const int age,
-		const std::string& speciality, const int experience, const double salary
+		const std::string& speciality, const int experience, const double salary, const Date& date
 	) : Human(lastName, firstName, age)
 	{
-		
+		cout << date << endl;
 		setSpeciality(speciality);
 		setExperience(experience);
 		setSalary(salary);
-		//setDateOfEnployment(date);
+		setDateOfEmployment(date);
 		cout << "TConstructor:\t\t" << endl;
 	}
+
 	Teacher(const Teacher& other) : Human(other)
 	{
 		this->speciality = other.speciality;
 		this->experience = other.experience;
 		this->salary = other.salary;
-		//setDateOfEnployment(date);
+		this->dateOfEmployment = other.dateOfEmployment;
 		cout << "T Copy constructor:\t" << endl;
 	}
+
 	~Teacher()
 	{
 		cout << "TDestructor:\t\t" << endl;
 	}
+
 	void print() const
 	{
 		Human::print();
-		cout << speciality << " " << experience << " " << salary << endl;
+		cout << speciality << " " << experience << " " << salary << " " << dateOfEmployment << endl;
 	}
 };
 
-class Graduate :Student , Teacher
+std::ostream& operator<<(std::ostream& os, const Teacher& teacher)
+{
+	cout << teacher.getLastName() << " " << teacher.getFirstName() << " " <<
+		teacher.getAge() << " " << teacher.getSpeciality() << " " << teacher.getSalary() <<
+		" " << teacher.getDateOfEmployment();
+	return os;
+}
+
+class Graduate :public Student
 {
 	std::string diploma;
 	Teacher supervisor;
@@ -285,7 +312,7 @@ public:
 
 	void setDiploma(const std::string& diploma)
 	{
-		this->diploma;
+		this->diploma = diploma;
 	}
 
 	void setSupervisor(const Teacher supervisor)
@@ -293,7 +320,7 @@ public:
 		this->supervisor = supervisor;
 	}
 
-	Graduate(const Student student, const std::string& diploma, const Teacher teacher) :Student{ student }, Teacher{ teacher }
+	Graduate(const Student& student, const std::string& diploma, const Teacher& teacher) :Student{ student }
 	{
 		setDiploma(diploma);
 		setSupervisor(teacher);
@@ -305,10 +332,18 @@ public:
 	}
 	void print() const
 	{
-		cout << diploma << " " << supervisor << endl;
+		Student::print();
+		cout << diploma << " " << supervisor.getLastName() << " " << supervisor.getFirstName() << endl;
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Graduate& graduate)
+{
+	cout << graduate.getLastName() << " " << graduate.getFirstName() << " " <<
+		graduate.getAge() << " " << graduate.getSpeciality() << " " << graduate.getGroup() << " " << 
+		graduate.getRating() << " " << graduate.getAttendance() << graduate.getDiploma() << graduate.getSupervisor();
+	return os;
+}
 
 void main()
 {
@@ -316,13 +351,16 @@ void main()
 
 	Human human("Montana", "Antonio", 30);
 	human.print();
+	cout << human << endl;
+
 
 	Student student("Pinkman", "Jessie", 20, "Chemistry", "PD-212", 4.8, 0.97);
 	student.print();
+	cout << student << endl;
 
-	Teacher teacher("Walter", "White", 45, "Chemistry", 25, 1000);
+	Teacher teacher("Walter", "White", 45, "Chemistry", 25, 1000, Date(2, 10, 1998));
 	teacher.print();
 
-	Graduate
-
+	Graduate graduate(student, "Methamfetamine production", teacher);
+	graduate.print();
 }
