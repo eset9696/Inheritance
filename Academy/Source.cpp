@@ -166,13 +166,6 @@ public:
 		this->salary = salary;
 	}
 
-	Teacher() :Human("", "", 0)
-	{
-		setSpeciality("");
-		setExperience(0);
-		setSalary(0);
-	}
-
 	Teacher(
 		const std::string& lastName, const std::string& firstName, const int age,
 		const std::string& speciality, const int experience, const double salary
