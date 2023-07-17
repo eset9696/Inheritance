@@ -268,7 +268,7 @@ public:
 	}
 };
 
-class Graduate :Student , Teacher
+class Graduate :Student
 {
 	std::string diploma;
 	std::string supervisor;
@@ -278,25 +278,29 @@ public:
 		return diploma;
 	}
 
-	const Teacher getSupervisor() const
+	const std::string getSupervisor() const
 	{
 		return supervisor;
 	}
 
 	void setDiploma(const std::string& diploma)
 	{
-		this->diploma;
+		this->diploma = diploma;
 	}
 
-	void setSupervisor(const Teacher supervisor)
+	void setSupervisor(const std::string& supervisor)
 	{
 		this->supervisor = supervisor;
 	}
 
-	Graduate(const Student student, const std::string& diploma, const Teacher teacher) :Student{ student }, Teacher{ teacher }
+	Graduate(
+		const std::string& lastName, const std::string& firstName, const int age,
+		const std::string& speciality, const std::string& group, const double rating, const double attendance,
+		const std::string& diploma, const std::string& supervisor
+	) :Student(lastName, firstName, age, speciality, group, rating, attendance)
 	{
 		setDiploma(diploma);
-		setSupervisor(teacher);
+		setSupervisor(supervisor);
 		cout << "G Constructor:\t\t" << endl;
 	}
 	~Graduate()
@@ -305,6 +309,7 @@ public:
 	}
 	void print() const
 	{
+		Student::print();
 		cout << diploma << " " << supervisor << endl;
 	}
 };
@@ -323,6 +328,6 @@ void main()
 	Teacher teacher("Walter", "White", 45, "Chemistry", 25, 1000);
 	teacher.print();
 
-	Graduate
-
+	Graduate graduate("Pinkman", "Jessie", 20, "Chemistry", "PD-212", 4.8, 0.97, "\"Methamphetamine production\"", "Walter White");
+	graduate.print();
 }
