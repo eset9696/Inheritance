@@ -271,7 +271,7 @@ public:
 class Graduate :Student , Teacher
 {
 	std::string diploma;
-	Teacher supervisor;
+	std::string supervisor;
 public:
 	const std::string& getDiploma() const
 	{
