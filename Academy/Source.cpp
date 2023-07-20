@@ -134,9 +134,8 @@ class Teacher :public Human
 {
 	std::string speciality;
 	int experience;
-	double salary;
 public:
-	const std::string getSpeciality() const
+	const std::string& getSpeciality() const
 	{
 		return speciality;
 	}
