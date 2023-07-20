@@ -248,7 +248,7 @@ class Teacher :public Human
 	Date dateOfEmployment;
 
 public:
-	const std::string getSpeciality() const
+	const std::string& getSpeciality() const
 	{
 		return speciality;
 	}
@@ -263,7 +263,7 @@ public:
 		return salary;
 	}
 
-	Date getDateOfEmployment() const
+	const Date& getDateOfEmployment() const
 	{
 		return dateOfEmployment;
 	}
