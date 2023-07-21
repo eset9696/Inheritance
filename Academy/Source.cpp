@@ -137,12 +137,6 @@ public:
 	}
 };
 
-std::ostream& operator<<(std::ostream& os, const Student& obj)
-{
-	obj.print(os);
-	return os;
-}
-
 class Teacher :public Human
 {
 	std::string speciality;
@@ -196,12 +190,6 @@ public:
 	}
 };
 
-std::ostream& operator<<(std::ostream& os, const Teacher& obj)
-{
-	obj.print(os);
-	return os;
-}
-
 class Graduate : public Student
 {
 	std::string subject;
@@ -236,12 +224,6 @@ public:
 		return os << subject << endl;
 	}
 };
-
-std::ostream& operator<<(std::ostream& os, const Graduate& obj)
-{
-	obj.print(os);
-	return os;
-}
 
 //#define INHERITANCE
 
