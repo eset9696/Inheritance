@@ -1,5 +1,6 @@
 //inheritance
 #include <iostream>
+#include <fstream>
 
 
 #define delimeter "\n-----------------------------\n"
@@ -7,6 +8,11 @@ using namespace std;
 
 class Human
 {
+	static const int LAST_NAME_WIDTH = 12;
+	static const int FIRST_NAME_WIDTH = 12;
+	static const int AGE_WIDTH = 5;
+	static int count;
+
 protected:
 
 	string lastName;
@@ -50,27 +56,58 @@ public:
 		setLastName(lastName);
 		setFirstName(firstName);
 		setAge(age);
-		cout << "HConstructor:\t\t" << this << endl;
+		count++;
+		cout << "H Constructor:\t\t" << this << endl;
 	}
 
 	virtual ~Human()
 	{
-		cout << "HDestructor:\t\t" << this << endl;
+		count--;
+		cout << "H Destructor:\t\t" << this << endl;
 	}
 
 	virtual std::ostream& print(std::ostream& os) const
 	{
 		return os << lastName << " " << firstName << " " << age;
 	}
+	
+	virtual std::ofstream& print(std::ofstream& ofs) const
+	{
+		ofs.width(LAST_NAME_WIDTH);
+		ofs << std::left;
+		ofs << lastName;
+
+		ofs.width(FIRST_NAME_WIDTH);
+		ofs << std::left;
+		ofs << firstName;
+
+		ofs.width(AGE_WIDTH);
+		ofs << age;
+
+		return ofs;
+	}
 };
+
+int Human::count = 0; // Определение или же реализация статической переменной
 
 std::ostream& operator<<(std::ostream& os, const Human& obj)
 {
 	return obj.print(os);
 }
 
+std::ofstream& operator<<(std::ofstream& ofs, const Human& obj)
+{
+	obj.print(ofs);
+	return ofs;
+}
+
 class Student :public Human
 {
+	static const int SPECIALITY_WIDTH = 22;
+	static const int GROUP_WIDTH = 10;
+	static const int RAITING_WIDTH = 8;
+	static const int ATTENDANCE_WIDTH = 8;
+
 	std::string speciality;
 	std::string group;
 	double rating;
@@ -135,10 +172,32 @@ public:
 		Human::print(os) << " ";
 		return os << speciality << " " << group << " " << rating << " " << attendance;
 	}
+
+	ofstream& print(std::ofstream& ofs) const
+	{
+		Human::print(ofs) << " ";
+		
+		ofs.width(SPECIALITY_WIDTH);
+		ofs << speciality;
+		
+		ofs.width(GROUP_WIDTH);
+		ofs << group;
+		
+		ofs.width(RAITING_WIDTH);
+		ofs << rating;
+
+		ofs.width(ATTENDANCE_WIDTH);
+		ofs << attendance;
+
+		return ofs;
+	}
 };
 
 class Teacher :public Human
 {
+	static const int SPECIALITY_WIDTH = 22;
+	static const int EXPERIENCE_WIDTH = 2;
+
 	std::string speciality;
 	int experience;
 
@@ -190,10 +249,25 @@ public:
 		Human::print(os) << " ";
 		return os << speciality << " " << experience;
 	}
+
+	std::ofstream& print(std::ofstream& ofs) const
+	{
+		Human::print(ofs) << " ";
+
+		ofs.width(SPECIALITY_WIDTH);
+		ofs << speciality;
+
+		ofs.width(EXPERIENCE_WIDTH);
+		ofs << experience;
+
+		return ofs;
+	}
 };
 
 class Graduate : public Student
 {
+	static const int SUBJECT_WIDTH = 30;
+
 	std::string subject;
 
 public:
@@ -229,7 +303,40 @@ public:
 		Student::print(os) << " ";
 		return os << subject << endl;
 	}
+
+	std::ofstream& print(std::ofstream& ofs) const
+	{
+		Student::print(ofs) << " ";
+
+		ofs.width(SUBJECT_WIDTH);
+		ofs << subject;
+		
+		return ofs; 
+	}
 };
+
+void print(Human** group, const int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		cout << *group[i] << endl;
+		cout << delimeter << endl;
+	}
+}
+
+void save(Human** group, const int n, const char filename[])
+{
+	std::ofstream fout;
+	fout.open(filename);
+	for(int i = 0; i < n; i++)
+	{
+		fout << *group[i] << endl;
+	}
+	fout.close();
+	std::string command = "start notepad ";
+	command += filename;
+	system(command.c_str());
+}
 
 //#define INHERITANCE
 
@@ -253,18 +360,14 @@ void main()
 
 	Human* group[] =
 	{
-		new Student("Ivanov", "Ivan", 22, "Physics", "F-230", 0.9, 0.78),
+		new Student("Ivanov", "Ivan", 22, "Physics", "F-230", 98, 91),
 		new Teacher("House", "Gregory", 47, "Medicine", 20),
-		new Graduate("Forman", "Eric", 32, "Medicine", "MC-120", 0.99, 0.93, "\"Neurophysiology\""),
+		new Graduate("Forman", "Eric", 32, "Medicine", "MC-120", 95, 89, "\"Neurophysiology of \""),
 	};
 
-	for (int i = 0; i <  sizeof(group)/ sizeof(group[0]); i++)
-	{
-		/*cout << typeid(*group[i]).name() << ":\n";
-		group[i]->print();*/
-		cout << *group[i] << endl;
-		cout << delimeter << endl;
-	}
+	save(group, sizeof(group) / sizeof(group[0]), "group.txt");
+	print(group, sizeof(group) / sizeof(group[0]));
+
 
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
