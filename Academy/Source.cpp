@@ -151,12 +151,22 @@ public:
 		cout << "HDestructor:\t\t" << this << endl;
 	}
 
-	void print() const 
+	virtual void print() const 
 	{
 		cout << delimeter << endl;
 		cout << "Name: " << lastName << " " << firstName << ". Age: " << age << endl;
 	}
+	virtual std::ostream& print(std:: ostream& os) const
+	{
+		return os << "Name: " << lastName << " " << firstName << ". Age: " << age;
+	}
+
 };
+
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return obj.print(os);
+}
 
 class Student :public Human
 {
@@ -231,12 +241,20 @@ public:
 		
 		cout << "SDestructor:\t\t" << this << endl;
 	}
+
 	void print() const
 	{
 		cout << delimeter << endl;
 		Human::print();
 		cout << "Speciality: " << speciality << ". Study group: " << group << ". Average score: " << rating <<
 			". Attendance: " << attendance << endl;
+	}
+
+	std::ostream& print(std:: ostream& os) const
+	{
+		Human::print(os);
+		return os << "Speciality: " << speciality << ". Study group: " << group << ". Average score: " << rating <<
+			". Attendance: " << attendance;
 	}
 };
 
@@ -332,6 +350,13 @@ public:
 		cout << "Speciality: " << speciality << ". Work experience: " << experience << ". Salary: " << salary <<
 			"$. Date of employment: " << dateOfEmployment << endl;
 	}
+
+	std::ostream& print(std::ostream& os) const
+	{
+		Human::print(os);
+		return os << "Speciality: " << speciality << ". Work experience: " << experience << ". Salary: " << salary <<
+			"$. Date of employment: " << dateOfEmployment;
+	}
 };
 
 class Graduate :public Student
@@ -367,16 +392,24 @@ public:
 		
 		cout << "G Constructor:\t\t" << this << endl;
 	}
+
 	~Graduate()
 	{
 		
 		cout << "G Destructor:\t\t" << this << endl;
 	}
+
 	void print() const
 	{
 		cout << delimeter << endl;
 		Student::print();
 		cout << "Diploma theme: " << diploma << ". Diploma supervisor: " << supervisor.getLastName() << " " << supervisor.getFirstName() << endl;
+	}
+
+	std::ostream& print(std::ostream& os) const
+	{
+		Student::print(os) << " ";
+		return os << "Diploma theme: " << diploma << ". Diploma supervisor: " << supervisor.getLastName() << " " << supervisor.getFirstName();
 	}
 };
 
