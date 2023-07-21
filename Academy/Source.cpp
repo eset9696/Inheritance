@@ -141,7 +141,9 @@ class Teacher :public Human
 {
 	std::string speciality;
 	int experience;
+
 public:
+
 	const std::string& getSpeciality() const
 	{
 		return speciality;
@@ -193,7 +195,9 @@ public:
 class Graduate : public Student
 {
 	std::string subject;
+
 public:
+
 	const std::string& getSubject() const
 	{
 		return subject;
@@ -214,10 +218,12 @@ public:
 
 		cout << "G Constructor:\t\t" << this << endl;
 	}
+
 	~Graduate()
 	{
 		cout << "G Destructor:\t\t" << this << endl;
 	}
+
 	std::ostream& print(std::ostream& os) const
 	{
 		Student::print(os) << " ";
@@ -251,6 +257,7 @@ void main()
 		new Teacher("House", "Gregory", 47, "Medicine", 20),
 		new Graduate("Forman", "Eric", 32, "Medicine", "MC-120", 0.99, 0.93, "\"Neurophysiology\""),
 	};
+
 	for (int i = 0; i <  sizeof(group)/ sizeof(group[0]); i++)
 	{
 		/*cout << typeid(*group[i]).name() << ":\n";
@@ -258,6 +265,7 @@ void main()
 		cout << *group[i] << endl;
 		cout << delimeter << endl;
 	}
+
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i];
