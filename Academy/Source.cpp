@@ -1,6 +1,8 @@
 //inheritance
 #include <iostream>
 
+
+#define delimeter "\n-----------------------------\n"
 using namespace std;
 
 class Human
@@ -48,19 +50,24 @@ public:
 		setLastName(lastName);
 		setFirstName(firstName);
 		setAge(age);
-		cout << "HConstructor:\t\t" << endl;
+		cout << "HConstructor:\t\t" << this << endl;
 	}
 
-	~Human()
+	virtual ~Human()
 	{
-		cout << "HDestructor:\t\t" << endl;
+		cout << "HDestructor:\t\t" << this << endl;
 	}
 
-	void print() const 
+	virtual std::ostream& print(std::ostream& os) const
 	{
-		cout << lastName << " " << firstName << " " << age << endl;
+		return os << lastName << " " << firstName << " " << age;
 	}
 };
+
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return obj.print(os);
+}
 
 class Student :public Human
 {
@@ -116,19 +123,25 @@ public:
 		setGroup(group);
 		setRating(rating);
 		setAttendance(attendance);
-		cout << "SConstructor:\t\t" << endl;
+		cout << "SConstructor:\t\t" << this << endl;
 	}
 
 	~Student()
 	{
-		cout << "SDestructor:\t\t" << endl;
+		cout << "SDestructor:\t\t" << this << endl;
 	}
-	void print() const
+	std::ostream& print(std::ostream& os) const
 	{
-		Human::print();
-		cout << speciality << " " << group << " " << rating << " " << attendance << endl;
+		Human::print(os) << " ";
+		return os << speciality << " " << group << " " << rating << " " << attendance;
 	}
 };
+
+std::ostream& operator<<(std::ostream& os, const Student& obj)
+{
+	obj.print(os);
+	return os;
+}
 
 class Teacher :public Human
 {
@@ -145,10 +158,6 @@ public:
 		return experience;
 	}
 
-	double getSalary() const
-	{
-		return salary;
-	}
 
 	void setSpeciality(const std::string& speciality)
 	{
@@ -160,100 +169,116 @@ public:
 		this->experience = experience;
 	}
 
-	void setSalary(const double salary)
-	{
-		this->salary = salary;
-	}
-
 	Teacher(
 		const std::string& lastName, const std::string& firstName, const int age,
-		const std::string& speciality, const int experience, const double salary
+		const std::string& speciality, const int experience
 	) : Human(lastName, firstName, age)
 	{
-		
 		setSpeciality(speciality);
 		setExperience(experience);
-		setSalary(salary);
-		cout << "TConstructor:\t\t" << endl;
+
+		cout << "TConstructor:\t\t" << this << endl;
 	}
 	Teacher(const Teacher& other) : Human(other)
 	{
 		this->speciality = other.speciality;
 		this->experience = other.experience;
-		this->salary = other.salary;
-		cout << "T Copy constructor:\t" << endl;
+		cout << "T Copy constructor:\t" << this << endl;
 	}
 	~Teacher()
 	{
-		cout << "TDestructor:\t\t" << endl;
+		cout << "TDestructor:\t\t" << this << endl;
 	}
-	void print() const
+	std::ostream& print(std::ostream& os) const
 	{
-		Human::print();
-		cout << speciality << " " << experience << " " << salary << endl;
+		Human::print(os) << " ";
+		return os << speciality << " " << experience;
 	}
 };
 
-class Graduate :Student
+std::ostream& operator<<(std::ostream& os, const Teacher& obj)
 {
-	std::string diploma;
-	std::string supervisor;
+	obj.print(os);
+	return os;
+}
+
+class Graduate : public Student
+{
+	std::string subject;
 public:
-	const std::string& getDiploma() const
+	const std::string& getSubject() const
 	{
-		return diploma;
+		return subject;
 	}
 
-	const std::string getSupervisor() const
+	void setSubject(const std::string& subject)
 	{
-		return supervisor;
-	}
-
-	void setDiploma(const std::string& diploma)
-	{
-		this->diploma = diploma;
-	}
-
-	void setSupervisor(const std::string& supervisor)
-	{
-		this->supervisor = supervisor;
+		this->subject = subject;
 	}
 
 	Graduate(
 		const std::string& lastName, const std::string& firstName, const int age,
 		const std::string& speciality, const std::string& group, const double rating, const double attendance,
-		const std::string& diploma, const std::string& supervisor
+		const std::string& subject
 	) :Student(lastName, firstName, age, speciality, group, rating, attendance)
 	{
-		setDiploma(diploma);
-		setSupervisor(supervisor);
-		cout << "G Constructor:\t\t" << endl;
+		setSubject(subject);
+
+		cout << "G Constructor:\t\t" << this << endl;
 	}
 	~Graduate()
 	{
-		cout << "G Destructor:\t\t" << endl;
+		cout << "G Destructor:\t\t" << this << endl;
 	}
-	void print() const
+	std::ostream& print(std::ostream& os) const
 	{
-		Student::print();
-		cout << diploma << " " << supervisor << endl;
+		Student::print(os) << " ";
+		return os << subject << endl;
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Graduate& obj)
+{
+	obj.print(os);
+	return os;
+}
+
+//#define INHERITANCE
 
 void main()
 {
 	setlocale(LC_ALL, "");
 
+#ifdef INHERITANCE
 	Human human("Montana", "Antonio", 30);
 	human.print();
 
 	Student student("Pinkman", "Jessie", 20, "Chemistry", "PD-212", 4.8, 0.97);
 	student.print();
 
-	Teacher teacher("Walter", "White", 45, "Chemistry", 25, 1000);
+	Teacher teacher("White", "Walter", 45, "Chemistry", 25);
 	teacher.print();
 
-	Graduate graduate("Pinkman", "Jessie", 20, "Chemistry", "PD-212", 4.8, 0.97, "\"Methamphetamine production\"", "Walter White");
+	Graduate graduate("Pinkman", "Jessie", 20, "Chemistry", "PD-212", 4.8, 0.97, "\"Methamphetamine production\"");
 	graduate.print();
+#endif // INHERITANCE
+
+	Human* group[] =
+	{
+		new Student("Ivanov", "Ivan", 22, "Physics", "F-230", 0.9, 0.78),
+		new Teacher("House", "Gregory", 47, "Medicine", 20),
+		new Graduate("Forman", "Eric", 32, "Medicine", "MC-120", 0.99, 0.93, "\"Neurophysiology\""),
+	};
+	for (int i = 0; i <  sizeof(group)/ sizeof(group[0]); i++)
+	{
+		/*cout << typeid(*group[i]).name() << ":\n";
+		group[i]->print();*/
+		cout << *group[i] << endl;
+		cout << delimeter << endl;
+	}
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i];
+		cout << delimeter << endl;
+	}
 }
