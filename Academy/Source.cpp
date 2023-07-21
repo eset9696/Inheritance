@@ -154,11 +154,11 @@ public:
 	virtual void print() const 
 	{
 		cout << delimeter << endl;
-		cout << "Name: " << lastName << " " << firstName << ". Age: " << age << endl;
+		cout << lastName << " " << firstName << " " << age << endl;
 	}
 	virtual std::ostream& print(std:: ostream& os) const
 	{
-		return os << "Name: " << lastName << " " << firstName << ". Age: " << age;
+		return os << lastName << " " << firstName << " " << age;
 	}
 
 };
@@ -246,15 +246,13 @@ public:
 	{
 		cout << delimeter << endl;
 		Human::print();
-		cout << "Speciality: " << speciality << ". Study group: " << group << ". Average score: " << rating <<
-			". Attendance: " << attendance << endl;
+		cout << speciality << " " << group << " " << rating << " " << attendance << endl;
 	}
 
 	std::ostream& print(std:: ostream& os) const
 	{
-		Human::print(os);
-		return os << "Speciality: " << speciality << ". Study group: " << group << ". Average score: " << rating <<
-			". Attendance: " << attendance;
+		Human::print(os) << " ";
+		return os << speciality << " " << group << " " << rating << " " << attendance;
 	}
 };
 
@@ -347,15 +345,13 @@ public:
 	{
 		cout << delimeter << endl;
 		Human::print();
-		cout << "Speciality: " << speciality << ". Work experience: " << experience << ". Salary: " << salary <<
-			"$. Date of employment: " << dateOfEmployment << endl;
+		cout << speciality << " " << experience << " " << salary << " " << dateOfEmployment << endl;
 	}
 
 	std::ostream& print(std::ostream& os) const
 	{
-		Human::print(os);
-		return os << "Speciality: " << speciality << ". Work experience: " << experience << ". Salary: " << salary <<
-			"$. Date of employment: " << dateOfEmployment;
+		Human::print(os) << " ";
+		return os << speciality << " " << experience << " " << salary << " " << dateOfEmployment;
 	}
 };
 
@@ -403,13 +399,13 @@ public:
 	{
 		cout << delimeter << endl;
 		Student::print();
-		cout << "Diploma theme: " << diploma << ". Diploma supervisor: " << supervisor.getLastName() << " " << supervisor.getFirstName() << endl;
+		cout << diploma << " " << supervisor.getLastName() << " " << supervisor.getFirstName() << endl;
 	}
 
 	std::ostream& print(std::ostream& os) const
 	{
 		Student::print(os) << " ";
-		return os << "Diploma theme: " << diploma << ". Diploma supervisor: " << supervisor.getLastName() << " " << supervisor.getFirstName();
+		return os << diploma << " " << supervisor.getLastName() << " " << supervisor.getFirstName();
 	}
 };
 
@@ -424,9 +420,29 @@ void main()
 	Student student("Pinkman", "Jessie", 20, "Chemistry", "PD-212", 4.8, 0.97);
 	student.print();
 
-	Teacher teacher("Walter", "White", 45, "Chemistry", 25, 1000, Date(2, 10, 1998));
+	Teacher teacher("White", "Walter", 45, "Chemistry", 25, 1000, Date(2, 10, 1998));
 	teacher.print();
 
 	Graduate graduate(student, "\"Methamfetamine production\"", teacher);
 	graduate.print();
+
+
+	Human* group[] =
+	{
+		new Student("Ivanov", "Ivan", 22, "Physics", "F-230", 0.9, 0.78),
+		new Teacher("House", "Gregory", 47, "Medicine", 20, 1000, Date(12,10,1998)),
+		new Graduate(Student("Forman", "Eric", 32, "Medicine", "MC-120", 0.99, 0.93), "\"Neurophysiology\"", *dynamic_cast<Teacher*>(group[1])),
+	};
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		/*cout << typeid(*group[i]).name() << ":\n";
+		group[i]->print();*/
+		cout << *group[i] << endl;
+		cout << delimeter << endl;
+	}
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i];
+		cout << delimeter << endl;
+	}
 }
