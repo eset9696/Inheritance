@@ -431,15 +431,16 @@ void main()
 	{
 		new Student("Ivanov", "Ivan", 22, "Physics", "F-230", 0.9, 0.78),
 		new Teacher("House", "Gregory", 47, "Medicine", 20, 1000, Date(12,10,1998)),
-		new Graduate(Student("Forman", "Eric", 32, "Medicine", "MC-120", 0.99, 0.93), "\"Neurophysiology\"", *dynamic_cast<Teacher*>(group[1])),
+		new Graduate(Student("Forman", "Eric", 32, "Medicine", "MC-120", 0.99, 0.93), "\"Neurophysiology\"", 
+		*dynamic_cast<Teacher*>(group[1])),
 	};
+
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
-		/*cout << typeid(*group[i]).name() << ":\n";
-		group[i]->print();*/
 		cout << *group[i] << endl;
 		cout << delimeter << endl;
 	}
+
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i];
