@@ -42,7 +42,7 @@ void main()
 			const int SIZE = 10240;
 			char sz_buffer[SIZE] = {};
 			fin.getline(sz_buffer, SIZE);
-			cout << sz_buffer << endl;
+			cout << "First read " << sz_buffer << endl;
 		}
 		//5) Закрываем поток
 		fin.close();

@@ -1,6 +1,7 @@
 //inheritance
 #include <iostream>
 #include <fstream>
+#include <string>
 
 
 #define delimeter "\n-----------------------------\n"
@@ -73,6 +74,8 @@ public:
 	
 	virtual std::ofstream& print(std::ofstream& ofs) const
 	{
+		ofs << typeid(*this).name() << ":\t";
+
 		ofs.width(LAST_NAME_WIDTH);
 		ofs << std::left;
 		ofs << lastName;
@@ -333,9 +336,41 @@ void save(Human** group, const int n, const char filename[])
 		fout << *group[i] << endl;
 	}
 	fout.close();
-	std::string command = "start notepad ";
+	/*std::string command = "start notepad ";
 	command += filename;
-	system(command.c_str());
+	system(command.c_str());*/
+}
+
+Human** load(const std:: string& filename, int& size)
+{
+	Human** group = nullptr;
+	std::ifstream fin(filename);
+	if (fin.is_open())
+	{	//1) Определяем размер массива
+		for (size = 0;!fin.eof(); size++)
+		{
+			std::string buffer;
+			std::getline(fin, buffer);
+		}
+		cout << "size:\t" << size << endl;
+		//2) Выделяем память под массив
+		group = new Human * [--size] {};
+
+		for(int i = 0; i < size; i++)
+		{
+			string buffer[256] = {};
+			getline(fin, buffer[i]);
+			cout << "afafsaasa" << buffer[i] << endl;
+		
+		}
+		fin.close();
+	}
+	else 
+	{
+		cerr << "File not found!" << endl;
+	}
+	//print(group, sizeof(group) / sizeof(group[0]));
+	return group;
 }
 
 //#define INHERITANCE
@@ -362,12 +397,15 @@ void main()
 	{
 		new Student("Ivanov", "Ivan", 22, "Physics", "F-230", 98, 91),
 		new Teacher("House", "Gregory", 47, "Medicine", 20),
-		new Graduate("Forman", "Eric", 32, "Medicine", "MC-120", 95, 89, "\"Neurophysiology of \""),
+		new Graduate("Forman", "Eric", 32, "Medicine", "MC-120", 95, 89, "\"Neurophysiology of the brain\""),
 	};
 
 	save(group, sizeof(group) / sizeof(group[0]), "group.txt");
 	print(group, sizeof(group) / sizeof(group[0]));
-
+	int size = 0;
+	load("group.txt", size);
+	/*Human* group2[] = {};
+	load("group.txt", size);*/
 
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
