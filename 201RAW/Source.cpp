@@ -20,6 +20,8 @@ void main()
 	swap(input, size, "201 ready.txt");
 	dhcpd("201 dhcpd.txt", input, size);
 
+
+	delete[] input;
 }
 
 string* file_read(const std::string& filename, int& size)

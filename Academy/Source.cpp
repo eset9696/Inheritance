@@ -352,7 +352,8 @@ Human** load(const std:: string& filename, int& size)
 			std::string buffer;
 			std::getline(fin, buffer);
 		}
-		cout << "size:\t" << size << endl;
+		fin.clear();
+		fin.seekg(0, fin.beg);
 		//2) Выделяем память под массив
 		group = new Human * [--size] {};
 
