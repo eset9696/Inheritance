@@ -1,7 +1,8 @@
-//inheritance
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 
 #define delimeter "\n-----------------------------\n"
@@ -341,6 +342,14 @@ void save(Human** group, const int n, const char filename[])
 	system(command.c_str());*/
 }
 
+void clear(Human** group, const int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		delete group[i];
+	}
+}
+
 Human** load(const std:: string& filename, int& size)
 {
 	Human** group = nullptr;
@@ -356,13 +365,36 @@ Human** load(const std:: string& filename, int& size)
 		fin.seekg(0, fin.beg);
 		//2) Выделяем память под массив
 		group = new Human * [--size] {};
-
 		for(int i = 0; i < size; i++)
 		{
-			string buffer[256] = {};
-			getline(fin, buffer[i]);
-			cout << "afafsaasa" << buffer[i] << endl;
-		
+			string cl, type;
+			fin >> cl >> type;
+
+			if(type == "Student:")
+			{
+				string last_name, first_name, stud_group, speciality;
+				int age;
+				double raiting, attendance;
+
+				fin >> last_name >> first_name >> age >> speciality >> stud_group >> raiting >> attendance;
+				group[i] = new Student(last_name, first_name, age, speciality, stud_group, raiting, attendance);
+			}
+			else if(type == "Teacher:")
+			{
+				string last_name, first_name, speciality;
+				int age, experience;
+				fin >> last_name >> first_name >> age >> speciality >> experience;
+				group[i] = new Teacher(last_name, first_name, age, speciality, experience);
+			}
+			else if (type == "Graduate:")
+			{
+				string last_name, first_name, stud_group, speciality, subject;
+				int age;
+				double raiting, attendance;
+				fin >> last_name >> first_name >> age >> speciality >> stud_group >> raiting >> attendance >> subject;
+				group[i] = new Graduate(last_name, first_name, age, speciality, stud_group, raiting, attendance, subject);
+			}
+			
 		}
 		fin.close();
 	}
@@ -370,7 +402,6 @@ Human** load(const std:: string& filename, int& size)
 	{
 		cerr << "File not found!" << endl;
 	}
-	//print(group, sizeof(group) / sizeof(group[0]));
 	return group;
 }
 
@@ -403,14 +434,12 @@ void main()
 
 	save(group, sizeof(group) / sizeof(group[0]), "group.txt");
 	print(group, sizeof(group) / sizeof(group[0]));
-	int size = 0;
-	load("group.txt", size);
-	/*Human* group2[] = {};
-	load("group.txt", size);*/
 
-	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
-	{
-		delete group[i];
-		cout << delimeter << endl;
-	}
+	int size = 0;
+	Human** group2 = load("group.txt", size);
+	print(group2, size);
+
+	clear(group, sizeof(group) / sizeof(group[0]));
+	clear(group2, size);
+	
 }
